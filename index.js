@@ -13,6 +13,94 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //   our db in mongodb -- this should match the name of the db you are going to use for your project.
 mongoose.connect('mongodb://localhost/basic_mongoose');
 
+
+
+var Schema = mongoose.Schema;
+
+var MessageSchema = new mongoose.Schema({
+ name: {type: String, required: true }, 
+ text: {type: String, required: true }, 
+ comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
+}, {timestamps: true });
+
+var CommentSchema = new mongoose.Schema({
+ _message: {type: Schema.Types.ObjectId, ref: 'Message'},
+ name: {type: String, required: true },
+ text: {type: String, required: true }
+}, {timestamp: true });
+
+mongoose.model('Message', MessageSchema);
+mongoose.model('Comment', CommentSchema);
+
+var Message = mongoose.model('Message');
+var Comment = mongoose.model('Comment');
+
+
+app.get('/', function(req, res) {
+  Message.find({})
+  .populate('comments')
+  .exec(function(err, messages){
+    res.render('index', {messages})
+  })
+})
+
+
+app.post('/messages', function(req, res) {
+  console.log("POST DATA", req.body);
+
+  var message = new Message({
+    name: req.body.name, text: req.body.text
+  });
+  message.save(function(err) {
+    if(err) {
+      console.log('something went wrong', err);
+    } else { 
+      console.log('successfully added a message!');
+      res.redirect('/');
+    }
+  })
+})
+
+
+
+app.get('/posts/:id', function (req, res){
+ Message.findOne({_id: req.params.id})
+  .populate('comments')
+  .exec(function(err, post) {
+    res.render('post', {post: post});
+  });
+});
+
+app.post('/posts/:id', function (req, res){
+  Message.findOne({_id: req.params.id}, function(err, message){
+   var comment = new Comment(req.body);
+   comment._message = message._id;
+   message.comments.push(comment);
+   comment.save(function(err){
+     message.save(function(err){
+       if(err) { console.log('Error'); } 
+       else { res.redirect('/'); }
+     });
+   });
+ });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var QuoteSchema = new mongoose.Schema({
  name: String,
  content: String,
@@ -136,5 +224,5 @@ app.post('/quotes/:id', function(req, res) {
 
 // Setting our Server to Listen on Port: 8000
 app.listen(8000, function() {
-    console.log("listening on port 8000");
+  console.log("listening on port 8000");
 })

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>QuotingDojo</title>
+  <title>Message Board</title>
   <style>
     form label, form input {
       display: block;
@@ -10,22 +10,25 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to QuotingDojo</h1>
-
+  <h1>The Dojo Message Board</h1>
+  <hr>
   <div class="container">
-    <form action="/quotes" method="post">
+    <form action="/messages" method="post">
       
       <label>
-        Your name: <input type="text" name="name" value="Trey">
+        Name: <input type="text" name="name" value="">
       </label>
       <label>
-        Your quote: 
-        <textarea name="content" id="" cols="30" rows="10">I make lame jokes</textarea>
+        Message: 
+        <textarea name="content" id="" cols="30" rows="10"></textarea>
       </label>
       <br>
-      <input type="submit" value="Add my quote!">
-      <a href="/quotes">Skip to quotes!</a>
+      <input type="submit" value="Post message">
     </form>
+    
+    <br>
+    <%= messages %>
+
   </div>
 </body>
 </html>
