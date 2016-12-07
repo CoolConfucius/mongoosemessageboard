@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuotingDojo</title>
+  <style>
+    form label, form input {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to QuotingDojo</h1>
+
+  <div class="container">
+    <form action="/quotes" method="post">
+      
+      <label>
+        Your name: <input type="text" name="name" value="Trey">
+      </label>
+      <label>
+        Your quote: 
+        <textarea name="content" id="" cols="30" rows="10">I make lame jokes</textarea>
+      </label>
+      <br>
+      <input type="submit" value="Add my quote!">
+      <a href="/quotes">Skip to quotes!</a>
+    </form>
+  </div>
+</body>
+</html>
