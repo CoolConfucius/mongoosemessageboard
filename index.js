@@ -61,6 +61,21 @@ app.post('/messages', function(req, res) {
   })
 })
 
+app.post('/messages/:id', function (req, res){
+  Message.findOne({_id: req.params.id}, function(err, message){
+   var comment = new Comment(req.body);
+   comment._message = message._id;
+   message.comments.push(comment);
+   comment.save(function(err){
+     message.save(function(err){
+       if(err) { console.log('Error'); } 
+       else { res.redirect('/'); }
+     });
+   });
+ });
+});
+
+
 
 
 app.get('/posts/:id', function (req, res){

@@ -27,11 +27,12 @@
     </form>
     
     <br>
-    
+    <%= messages %>
+
     <% messages.forEach(function(message, index){ %>
-      <h2>Name: <%= message.name %> at <%= message.createdAt %></h2>
+      <h2>Name: <%= message.name %></h2>
       <h2>Message: <%= message.text %></h2>
-      <form action="/messages/:id" method="post">
+      <form action="/messages/<%= message._id %>" method="post">
         <label>
           Name: <input type="text" name="name" value="">
         </label>
