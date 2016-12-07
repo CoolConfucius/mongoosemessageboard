@@ -32,6 +32,13 @@
     <% messages.forEach(function(message, index){ %>
       <h2>Name: <%= message.name %></h2>
       <h2>Message: <%= message.text %></h2>
+
+      <% message.comments.forEach(function(comment, index){ %>
+        <p>Name: <%= comment.name %></p>
+        <p>Comment: <%= comment.text %></p>      
+        <br/>
+      <% }) %>
+
       <form action="/messages/<%= message._id %>" method="post">
         <label>
           Name: <input type="text" name="name" value="">
@@ -43,7 +50,7 @@
         <br>
         <input type="submit" value="Post comment">
       </form>
-      <hr/>
+      <br/>
     <% }) %>
 
   </div>
