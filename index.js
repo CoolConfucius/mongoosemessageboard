@@ -36,6 +36,16 @@ var Message = mongoose.model('Message');
 var Comment = mongoose.model('Comment');
 
 
+// Require path
+var path = require('path');
+// Setting our Static Folder Directory
+app.use(express.static(path.join(__dirname, './static')));
+// Setting our Views Folder Directory
+app.set('views', path.join(__dirname, './views'));
+// Setting our View Engine set to EJS
+app.set('view engine', 'ejs');
+
+
 app.get('/', function(req, res) {
   Message.find({})
   .populate('comments')
@@ -51,9 +61,12 @@ app.post('/messages', function(req, res) {
   var message = new Message({
     name: req.body.name, text: req.body.text
   });
+
+
   message.save(function(err) {
     if(err) {
       console.log('something went wrong', err);
+      res.render('errors', {errors: err});
     } else { 
       console.log('successfully added a message!');
       res.redirect('/');
