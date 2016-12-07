@@ -18,15 +18,15 @@ mongoose.connect('mongodb://localhost/basic_mongoose');
 var Schema = mongoose.Schema;
 
 var MessageSchema = new mongoose.Schema({
- name: {type: String, required: true }, 
- text: {type: String, required: true }, 
+ name: {type: String, required: true, minlength: 2 }, 
+ text: {type: String, required: true, minlength: 6 }, 
  comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 }, {timestamps: true });
 
 var CommentSchema = new mongoose.Schema({
  _message: {type: Schema.Types.ObjectId, ref: 'Message'},
- name: {type: String, required: true },
- text: {type: String, required: true }
+ name: {type: String, required: true, minlength: 2 },
+ text: {type: String, required: true, minlength: 6 }
 }, {timestamp: true });
 
 mongoose.model('Message', MessageSchema);
